@@ -1,0 +1,51 @@
+---
+export interface Props {
+    id:string
+    title:string
+    details:string
+    imgsrc:string
+}
+
+const { id, title, details, imgsrc } = Astro.props
+---
+
+<a
+    href={`/rocket/${id}`}
+>
+    <div class={`
+        w-full p-5 my-3
+        rounded text-zinc-900 bg-gray-100
+        hover:shadow-2xl hover:scale-105
+        duration-700
+        flex flex-col md:flex-row gap-x-4
+        select-none
+    `}>
+        <img
+            class={`
+                aspect-auto h-full
+                md:h-auto md:aspect-[389/500]
+                object-cover object-center rounded
+                w-[100%] md:w-40
+            `}
+            src={imgsrc}
+            alt={`${title} Rocket`}
+            style={`view-transition-name: rocket-${id}`}
+        />
+        <br>
+        <section class="md:w-[400px] flex flex-col justify-between">
+            <header>
+                <h1
+                    class="font-medium text-lg"
+                    style={`view-transition-name: rocket-title-${id}`}
+                >{title}</h1>
+                <p
+                    class="mt-2 font-light text-lg"
+                    style={`view-transition-name: rocket-description-${id}`}
+                >{details.substring(0, 80)}...</p>
+            </header>
+            <footer>
+                <p class="mt-4 font-regular text-sm text-zinc-500 hover:text-zinc-800">Ver más</p>
+            </footer>
+        </section>
+    </div>
+</a>

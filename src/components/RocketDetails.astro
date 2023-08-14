@@ -1,0 +1,45 @@
+---
+import { rockets } from "src/data/rockets";
+
+const { rocket } = Astro.params
+
+const data = rockets.find(ship => ship.id == rocket)
+if (!data) {
+    return Astro.redirect('/404')
+}
+---
+<div class="relative flex flex-col">
+    <header class="w-full">
+        <a href="/" class="text-zinc-500 hover:text-zinc-700 text-sm">&lt; Back to Rockets List</a>
+        <div class="flex items-center mt-4">
+            <div class={`${data.active ? 'bg-green-500' : 'bg-red-500'} w-3 h-3 rounded-full mr-2`}></div>
+            <h1
+                class="text-3xl font-bold"
+                style={`view-transition-name: rocket-title-${data.id}`}
+            >{data.name}</h1>
+        </div>
+    </header>
+    <img
+        src={data.flickr_images[0]}
+        alt={`${data.name} Rocket`}
+        class="mt-4 rounded shadow-lg hover:scale-105 duration-200"
+        style={`view-transition-name: rocket-${data.id}`}
+    />
+    <section class="w-full">
+        <p 
+            class="mt-4 font-light text-lg"
+            style={`view-transition-name: rocket-description-${data.id}`}
+        >{data.description}</p>
+    </section>
+
+    <div class="w-full h-[1px] bg-black/20 rounded my-4" />
+
+    <footer class="w-full">
+        <h2 class="text-3xl text-gray-400/80 font-medium mb-2">Details</h2>
+        <p class="font-light text-lg"><span class="font-medium">Country:</span> {data.country}</p>
+        <p class="font-light text-lg"><span class="font-medium">Company:</span> {data.company}</p>
+        <p class="font-light text-lg"><span class="font-medium">Cost per Launch:</span> ${data.cost_per_launch.toLocaleString()}</p>
+        <p class="font-light text-lg"><span class="font-medium">Active:</span> {data.active ? 'Yes' : 'No'}</p>
+        <p class="font-medium text-lg"><span class="font-medium">Wikipedia:</span> <a href={data.wikipedia} class="text-blue-500 hover:underline">Learn more</a></p>
+    </footer>
+</div>

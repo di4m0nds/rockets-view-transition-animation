@@ -10,16 +10,53 @@ const { title } = Astro.props;
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description">
+		<meta name="description" content="Embark on a captivating journey through the history and technology of rockets with Rockets Explorer. Experience seamless transitions powered by modern native techniques like startViewTransition, supported on popular desktop and mobile browsers including Chrome, Edge, Opera and Chrome for Android.">
 		<meta name="viewport" content="width=device-width" />
+
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
+
+		<meta name="keywords" content="rockets, space exploration, rocket history, space vehicles, space technology">
+		<meta name="author" content="@di4m0nds - Javier Silvestri">
+		<meta name="robots" content="index, follow">
+
+		<meta name="twitter:site" content="@javslvt" />
+		<meta name="twitter:card" content="summary_large_image">
+
+		<meta name="view-transition" content="same-origin" />
 		<title>{title}</title>
 	</head>
 	<body>
 		<slot />
 	</body>
 </html>
+
+<style is:global>
+	@font-face {
+		font-family: 'Open Sans';
+		font-style: normal;
+		font-weight: 700;
+		src: url('../assets/fonts/OpenSans-Bold.ttf');
+	}
+	@font-face {
+		font-family: 'Open Sans';
+		font-style: normal;
+		font-weight: 600;
+		src: url('../assets/fonts/OpenSans-Medium.ttf');
+	}
+	@font-face {
+		font-family: 'Open Sans';
+		font-style: normal;
+		font-weight: 400;
+		src: url('../assets/fonts/OpenSans-Regular.ttf');
+	}
+	@font-face {
+		font-family: 'Open Sans';
+		font-style: normal;
+		font-weight: 300;
+		src: url('../assets/fonts/OpenSans-Light.ttf');
+	}
+</style>
+
 <style is:global>
 	:root {
 		--accent: 136, 58, 234;
@@ -27,13 +64,42 @@ const { title } = Astro.props;
 		--accent-dark: 49, 10, 101;
 		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
 	}
-	html {
-		font-family: system-ui, sans-serif;
-		background: #13151A;
-		background-size: 224px;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
+
+	::view-transition-old(root),
+	::view-transition-new(root) {
+		animation-duration: .6s;
 	}
 </style>
+
+<script>
+	const { navigation } = window as any
+    // window.navigation.addEventListener('navigate', (event) => {
+    navigation.addEventListener('navigate', (event) => {
+        const toUrl = new URL(event.destination.url)
+
+		console.log(location.origin, toUrl.origin)
+        if (location.origin !== toUrl.origin) return;
+
+        event.intercept({
+            async handler() {
+                const response = await fetch(toUrl.pathname)
+                const plainText = await response.text()
+
+				const parser = new DOMParser();
+				const $newDocument =  parser.parseFromString(plainText, 'text/html')
+
+				const title = $newDocument.querySelector('title')
+
+				const data = $newDocument.querySelector('body').innerHTML
+
+                // const data = plainText.match(/<body[^>]*>([\s\S]*)<\/body>/i)[1]
+
+                ;(document as any).startViewTransition(() => {
+					document.title = title.text
+                    document.body.innerHTML = data
+                    document.documentElement.scrollTop = 0
+                })
+            }
+        })
+    })
+</script>

@@ -1,0 +1,29 @@
+---
+import RocketItem from "./RocketItem.astro";
+import { rockets } from "../data/rockets"
+---
+
+<section class="py-10 px-6 md:px-20 relative w-full">
+    <header
+        class="p-5 text-3xl font-medium flex flex-row justify-center items-center"
+    >
+        <h2>Explorer</h2>
+    </header>
+
+	<ul class="w-full flex flex-row gap-x-10 flex-wrap justify-center">
+        {
+            rockets.map(rocket => {
+                return (
+                    <li>
+                        <RocketItem
+                            id={rocket.id}
+                            title={rocket.name}
+                            details={rocket.description}
+                            imgsrc={rocket.flickr_images[0]}
+                        />
+                    </li>
+                )
+            })
+        }
+	</ul>
+</section>

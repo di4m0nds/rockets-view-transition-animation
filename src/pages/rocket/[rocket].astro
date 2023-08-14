@@ -1,0 +1,22 @@
+---
+import RocketDetails from '@components/RocketDetails.astro';
+import Layout from '../../layouts/Layout.astro';
+import { rockets } from "src/data/rockets";
+import MainFooter from '@components/MainFooter.astro';
+
+const { rocket } = Astro.params
+
+const data = rockets.find(ship => ship.id == rocket)
+if (!data) {
+    return Astro.redirect('/404')
+}
+---
+
+<Layout title={`${data.name} Rocket`}>
+    <main class="font-sans max-w-3xl mx-auto p-8">
+        <RocketDetails />
+    </main>
+	<footer class="relative w-full py-5">
+        <MainFooter />
+    </footer>
+</Layout>

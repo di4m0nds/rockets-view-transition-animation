@@ -1,0 +1,23 @@
+---
+import MainHeader from '@components/MainHeader.astro';
+import Layout from '../layouts/Layout.astro';
+
+---
+
+<Layout title="404 - Not Found">
+    <header class="fixed top-0 bg-white w-screen">
+      <MainHeader />
+    </header>
+    <main class="bg-gradient-to-r from-gray-100 to-gray-300 h-screen flex items-center justify-center">
+    
+        <div class="text-center text-black flex flex-col items-center justify-center">
+          <h1 class="text-6xl font-extrabold mb-4">404</h1>
+          <div class="w-[400px] h-[1px] bg-black/30 rounded my-5" />
+          <h1 class="text-6xl font-extrabold mb-4">Oops!</h1>
+          <p class="text-lg my-6 font-light">Looks like you've ventured into uncharted territory.</p>
+          <p class="text-lg mb-6 font-light">Our intrepid astronaut couldn't find what you're looking for.</p>
+          <a href="/" class="font-bold text-lg text-zinc-500 hover:text-black transition duration-200">Return to Safety</a>
+        </div>
+
+    </main>
+</Layout>
